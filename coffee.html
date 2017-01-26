@@ -51,29 +51,53 @@
     "brew": 2.05,
     "espresso": 3.25,
     "latte": 4.15,
-    "hot chocolate": 2.50
+    "hot-chocolate": 2.50
     };
 
+    var totalRevenue;
     var myImage = document.getElementById("coffee-image");
     var myRevenueMessage = document.getElementById("revenue");
+    var myLatte = document.getElementById("latte");
+    var myEspresso = document.getElementById("espresso");
+    var myChocolate = document.getElementById("hot-chocolate");
+
+    var drinksOrdered = [];
 
     myImage.setAttribute("src", "static/coffee_beans.jpg");
 
     function showCoffee() {
         myImage.setAttribute("src", "static/coffee_mug.jpg");
+        setTimeout(showBeans, 2500);
     }
     function showBeans() {
         myImage.setAttribute("src", "static/coffee_beans.jpg");
     }
 
-    function makeCoffee() {
+    function makeCoffee(drinkType) {
         myImage.setAttribute("src", "static/coffee_machine.jpg");
         setTimeout(showCoffee, 1500);
-        setTimeout(showBeans, 4000);
+        
+        drinksOrdered.push(drinkType);
+        console.log(drinksOrdered);
+        revenue();
+        myRevenueMessage.innerHTML=totalRevenue;
     }
     
 
-    myImage.addEventListener("click", makeCoffee);
+    function revenue() {
+        totalRevenue = 0;
+        for (var i = 0; i < drinksOrdered.length; i++) {
+            totalRevenue += prices[drinksOrdered[i]];
+        }
+        return totalRevenue;
+    }
+
+
+    myImage.addEventListener("click", function () {return makeCoffee('brew'); });
+    myLatte.addEventListener("click", function () {return makeCoffee('latte'); });
+    myEspresso.addEventListener("click", function () {return makeCoffee('espresso'); });
+    myChocolate.addEventListener("click", function () {return makeCoffee('hot-chocolate'); });
+
     // if (myImage.getAttribute("src") == "static/coffee_machine.jpg") {
     //     setTimeout(showCoffee, 1500);
     //     setTimeout(showBeans, 4000);
